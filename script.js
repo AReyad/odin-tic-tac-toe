@@ -69,15 +69,13 @@ function game(playerOneName, playerTwoName) {
         if(player.getMovesCount() < 3) return false;
         let points = 0;
         for(let i = 0; i < winningCord.length; i++) {
-            if(points == 3) return true;
-            for(let j = 0; j < 3; j++) {
+            for(let j = 0; j < winningCord[i].length; j++) {
                 if(board[winningCord[i][j]] == player.marker) {
-                    points++ 
-                }
-                else {
-                    points = 0
+                    points++
+                    if(points == 3) return true;
                 }
             }
+        points = 0;
         };
         return false;
     };
@@ -93,6 +91,7 @@ function game(playerOneName, playerTwoName) {
     const getWinner = () => gameStatus.winner;
     const getGameStatus = () => gameStatus.gameOver;
 
-    return { makePlay, print, getWinner, getGameStatus };
+
+    return { makePlay, getWinner, getGameStatus };
 };
 
