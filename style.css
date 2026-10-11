@@ -1,0 +1,62 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+main {
+    min-height: 100vh;       
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 125px);
+    grid-template-rows: repeat(3, 125px);
+    margin-top: 3rem;
+}
+
+.cell {
+    border: 1px solid black;
+    font-size: 2.5rem;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.game-status {
+    font-size: 1.25rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.cell:nth-child(1), .cell:nth-child(2), .cell:nth-child(3) {
+    border-top: none;
+}
+
+.cell:nth-child(1), .cell:nth-child(4), .cell:nth-child(7) {
+    border-left: none;
+}
+
+.cell:nth-child(3), .cell:nth-child(6), .cell:nth-child(9) {
+    border-right: none;
+}
+
+.cell:nth-child(7), .cell:nth-child(8), .cell:nth-child(9) {
+    border-bottom: none;
+}
+
+
+button {
+    background-color: rgb(219, 152, 63);
+    padding: 1rem;
+    border: none;
+    border-radius: 5px;
+    margin-top: 2rem;
+    font-weight: 600;
+    font-size: 1.15rem;
+}
