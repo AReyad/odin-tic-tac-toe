@@ -90,8 +90,76 @@ function game(playerOneName, playerTwoName) {
 
     const getWinner = () => gameStatus.winner;
     const getGameStatus = () => gameStatus.gameOver;
+    const getCurrentPlayerProperty = (property) => currentPlayer[property];
+    const getOtherPlayerProperty = (property) => otherPlayer()[property];
 
 
-    return { makePlay, getWinner, getGameStatus };
+    return { makePlay, getWinner, getGameStatus, getCurrentPlayerProperty, getOtherPlayerProperty};
 };
 
+const gameDisplayController = (() => {
+    const boardEle = document.querySelector(".board");
+    let currentGame = game("player1", "player2");
+    const gameStatusEle = document.querySelector(".game-status")
+    const playerTurnEle = document.querySelector(".player-turn")
+
+    const createCells = () => { 
+        for(let i = 0; i < 9; i++) {
+        const cellElement = document.createElement("div")
+        cellElement.classList.add("cell")
+        boardEle.append(cellElement)
+    }}
+
+    const playTurn = (cell, index) => {
+        if(currentGame.getGameStatus()) return;
+        currentGame.makePlay(index)
+        cell.textContent = currentGame.getOtherPlayerProperty("marker")
+        displayPlayerTurn()
+        if(currentGame.getGameStatus()) return displayGameStatus();
+    }
+
+    const displayPlayerTurn = () => {
+        playerTurnEle.textContent = `${currentGame.getCurrentPlayerProperty("name")}(${currentGame.getCurrentPlayerProperty("marker")})'s turn`
+    }
+
+    const displayGameStatus = () => {
+        if(!currentGame.getGameStatus()) return;
+        playerTurnEle.textContent = "";
+        const gameStatusPara = document.createElement("p")
+        gameStatusPara.classList.add("status-para")
+        gameStatusEle.append(gameStatusPara)
+        const winner = currentGame.getWinner()
+        displayRestartBtn()
+        if(winner) return gameStatusPara.textContent = `${winner.name} (${winner.marker}) has won!`;
+        return gameStatusPara.textContent = "Draw!";
+    }
+
+    const displayRestartBtn = () => {
+        const restartBtn = document.createElement("button")
+        restartBtn.textContent = "Restart game"
+        restartBtn.addEventListener('click', restartGame)
+        document.querySelector("main").append(restartBtn)
+    }
+
+    const startGame = () => {
+        displayPlayerTurn()
+        createCells()
+        const cellElements = document.querySelectorAll(".cell")
+        cellElements.forEach((cell, index) => {
+        cell.classList.add(index)
+        cell.addEventListener('click', () => playTurn(cell, index))
+    })};
+
+    const restartGame = () => {
+        boardEle.textContent = "";
+        document.querySelector(".status-para").remove()
+        document.querySelector("button").remove()
+        currentGame = game("player1", "player2")
+        startGame()
+    }
+
+    return { startGame, restartGame }
+})();
+
+
+gameDisplayController.startGame()
